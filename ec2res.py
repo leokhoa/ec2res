@@ -265,48 +265,48 @@ if __name__ == '__main__':
 
     # print console output
 
-    print 'EC2 INSTANCES:'
+    print ('EC2 INSTANCES:')
     for inst in ec2_instance_list:
         res = ec2_res_coverage[inst.id]
         if res:
             my_index = ec2_res_usage[res['ReservedInstancesId']].index(inst)
-            print ANSIColor.green(pretty_print_ec2_instance(inst)+' '+pretty_print_ec2_res(res, my_index = my_index)), pretty_print_ec2_res_id(res),
+            print (ANSIColor.green(pretty_print_ec2_instance(inst)+' '+pretty_print_ec2_res(res, my_index = my_index)), pretty_print_ec2_res_id(res),)
         else:
-            print ANSIColor.red(pretty_print_ec2_instance(inst)+' NOT COVERED'),
+            print (ANSIColor.red(pretty_print_ec2_instance(inst)+' NOT COVERED'),)
         if inst.id in ec2_instance_status:
-            print ANSIColor.yellow('EVENTS! '+','.join(ec2_instance_status[inst.id])),
+            print (ANSIColor.yellow('EVENTS! '+','.join(ec2_instance_status[inst.id])),)
         print
 
     ec2_any_unused = False
-    print 'EC2 UNUSED RESERVATIONS:',
+    print ('EC2 UNUSED RESERVATIONS:')
     for res in ec2_res_list:
         use_count = len(ec2_res_usage[res['ReservedInstancesId']])
         if use_count >= res['InstanceCount']: continue
         if not ec2_any_unused:
             print
             ec2_any_unused = True
-        print ANSIColor.red(pretty_print_ec2_res(res, override_count = res['InstanceCount'] - use_count)), pretty_print_ec2_res_id(res)
+        print (ANSIColor.red(pretty_print_ec2_res(res, override_count = res['InstanceCount'] - use_count)), pretty_print_ec2_res_id(res))
     if not ec2_any_unused:
-        print '(none)'
+        print ('(none)')
 
-    print 'RDS INSTANCES:'
+    print ('RDS INSTANCES:')
     for inst in rds_instance_list:
         res = rds_res_coverage[inst['DBInstanceIdentifier']]
         if res:
             my_index = rds_res_usage[res['ReservedDBInstanceId']].index(inst)
-            print ANSIColor.green(pretty_print_rds_instance(inst)+' '+pretty_print_rds_res(res, rds_res_offerings, my_index = my_index)),
+            print (ANSIColor.green(pretty_print_rds_instance(inst)+' '+pretty_print_rds_res(res, rds_res_offerings, my_index = my_index)),)
         else:
-            print ANSIColor.red(pretty_print_rds_instance(inst)+' NOT COVERED'),
+            print (ANSIColor.red(pretty_print_rds_instance(inst)+' NOT COVERED'),)
         print
 
     rds_any_unused = False
-    print 'RDS UNUSED RESERVATIONS:',
+    print ('RDS UNUSED RESERVATIONS:'),
     for res in rds_res_list:
         use_count = len(rds_res_usage[res['ReservedDBInstanceId']])
         if use_count >= res['DBInstanceCount']: continue
         if not rds_any_unused:
             print
             rds_any_unused = True
-        print ANSIColor.red(pretty_print_rds_res(res, rds_res_offerings, override_count = res['DBInstanceCount'] - use_count)), res['ReservedDBInstanceId']
+        print (ANSIColor.red(pretty_print_rds_res(res, rds_res_offerings, override_count = res['DBInstanceCount'] - use_count)), res['ReservedDBInstanceId'])
     if not rds_any_unused:
-        print '(none)'
+        print ('(none)')
